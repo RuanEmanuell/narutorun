@@ -9,6 +9,9 @@ class Controller = _Controller with _$Controller;
 
 abstract class _Controller with Store {
   @observable
+  bool died = false;
+
+  @observable
   var json;
 
   @action

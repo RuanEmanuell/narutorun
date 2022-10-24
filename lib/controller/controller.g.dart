@@ -24,8 +24,7 @@ mixin _$Controller on _Controller, Store {
     });
   }
 
-  late final _$requestDataAsyncAction =
-      AsyncAction('_Controller.requestData', context: context);
+  late final _$requestDataAsyncAction = AsyncAction('_Controller.requestData', context: context);
 
   @override
   Future requestData() {

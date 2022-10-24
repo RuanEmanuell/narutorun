@@ -5,12 +5,11 @@ import "../controller/controller.dart";
 
 import "game.dart";
 
-
-final data=Controller();
+final data = Controller();
 
 class HomeScreen extends StatelessWidget {
-@override
-Widget build(BuildContext context){
-  return GameWidget(game:GameScreen());
-}
+  @override
+  Widget build(BuildContext context) {
+    return MainGame();
+  }
 }
