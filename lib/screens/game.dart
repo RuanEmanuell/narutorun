@@ -61,7 +61,7 @@ class _MainGameState extends State<MainGame> {
                         }
                       }),
                 ),
-                //Substituion button
+                //Substitution button
                 Container(
                   margin: EdgeInsets.only(top: screenHeight / 1.25, left: screenWidth / 1.5),
                   height: screenHeight / 3,
