@@ -2,7 +2,7 @@
 
 ## Naruto Ultimate Ninja Climber
 
-Um mini-game simples de Naruto, inspirado por<a href="https://youtu.be/3kleK72fooU?t=4">Naruto Ultimate Ninja Storm</a>. 
+Um mini-game simples de Naruto, inspirado por <a href="https://youtu.be/3kleK72fooU?t=4">Naruto Ultimate Ninja Storm</a>. 
 Esse projeto usa <a href="https://pub.dev/packages/mobx">MoBX</a> pra gerenciamento de estado e salva seus recordes no
 <a href="https://firebase.flutter.dev/docs/overview">Firebase Firestore</a>.
 
