@@ -8,13 +8,14 @@ import 'package:flutter/material.dart';
 import "package:flame/game.dart";
 import "package:flame/input.dart";
 
+import "home.dart";
 import "end.dart";
 import "../controller/controller.dart";
 
 bool isSubstitution = false;
 int isKurama = 0;
-bool died = false;
 bool tappable = true;
+bool canDie = true;
 
 class MainGame extends StatelessWidget {
   @override
@@ -22,7 +23,7 @@ class MainGame extends StatelessWidget {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: died
+      body: data.died
           ? EndScreen()
           : Stack(children: [
               Container(height: screenHeight, child: GameWidget(game: GameScreen(context: context))),
@@ -34,8 +35,12 @@ class MainGame extends StatelessWidget {
                     onPressed: () {
                       if (isKurama == 0) {
                         isKurama = 1;
+                        canDie = false;
                         Future.delayed(Duration(seconds: 5), () {
                           isKurama = 2;
+                        });
+                        Future.delayed(Duration(seconds: 7), () {
+                          canDie = true;
                         });
                         Future.delayed(Duration(seconds: 15), () {
                           isKurama = 0;
@@ -52,10 +57,12 @@ class MainGame extends StatelessWidget {
                       if (tappable && isKurama != 1) {
                         isSubstitution = true;
                         tappable = false;
-                        Future.delayed(Duration(milliseconds: 1800), () {
+                        canDie = false;
+                        Future.delayed(Duration(milliseconds: 1500), () {
                           isSubstitution = false;
                         });
                         Future.delayed(Duration(milliseconds: 1900), () {
+                          canDie = true;
                           tappable = true;
                         });
                       }
@@ -112,7 +119,7 @@ class GameScreen extends FlameGame with TapDetector, HasCollisionDetection {
 
     narutoAnimation1 = spriteSheet1.createAnimation(row: 0, stepTime: 0.15, to: 6);
     narutoAnimation2 = spriteSheet2.createAnimation(row: 0, stepTime: 0.13, to: 5);
-    narutoAnimation3 = spriteSheet3.createAnimation(row: 0, stepTime: 1.0, to: 2);
+    narutoAnimation3 = spriteSheet3.createAnimation(row: 0, stepTime: 0.5, to: 2);
 
     naruto = Naruto()
       ..animation = narutoAnimation2
@@ -123,7 +130,7 @@ class GameScreen extends FlameGame with TapDetector, HasCollisionDetection {
 
     obstacle1 = Obstacle1()
       ..sprite = await loadSprite("obstacle1.png")
-      ..position = Vector2(size[0] / 3.2, size[1] / 5)
+      ..position = Vector2(size[0] / 3.2, size[1])
       ..size = Vector2(size[0] / 5, size[1] / 7);
 
     add(obstacle1);
@@ -135,7 +142,7 @@ class GameScreen extends FlameGame with TapDetector, HasCollisionDetection {
 
     obstacle2 = Obstacle2()
       ..animation = obstacleAnimation
-      ..position = Vector2(size[0] / 3.2, size[1] / 5)
+      ..position = Vector2(size[0] / 3.2, size[1])
       ..size = Vector2(size[0] / 6, size[1] / 8);
 
     add(obstacle2);
@@ -144,7 +151,7 @@ class GameScreen extends FlameGame with TapDetector, HasCollisionDetection {
   @override
   void update(dt) {
     super.update(dt);
-    if (!died) {
+    if (!data.died) {
       obstacle1.y = obstacle1.y + 5;
       obstacle2.y = obstacle2.y + 7;
 
@@ -180,8 +187,8 @@ class Naruto extends SpriteAnimationComponent with CollisionCallbacks {
   @override
   void onCollision(Set<Vector2> intersectionPoints, PositionComponent naruto) {
     super.onCollision(intersectionPoints, naruto);
-    if (isKurama != 1 && !isSubstitution) {
-      died = true;
+    if (canDie) {
+      data.died = true;
     }
   }
 }
