@@ -6,6 +6,7 @@ import "../controller/controller.dart";
 import "game.dart";
 import "options.dart";
 
+//Importing Mobx
 final data = Controller();
 
 class HomeScreen extends StatelessWidget {
@@ -15,6 +16,7 @@ class HomeScreen extends StatelessWidget {
     var screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
         body: Container(
+            //This is the main container that contains the image
             height: screenHeight,
             width: screenWidth,
             decoration: BoxDecoration(
@@ -24,11 +26,13 @@ class HomeScreen extends StatelessWidget {
                     fit: BoxFit.cover,
                     image: AssetImage("assets/images/appbackground.png"))),
             child: Column(children: [
+              //Game Logo
               Container(
                   margin: EdgeInsets.only(top: screenHeight / 10),
                   width: screenWidth / 1.1,
                   height: screenHeight / 3,
                   child: Image.asset("assets/images/logo.png")),
+              //Play button
               Container(
                   margin: EdgeInsets.all(10),
                   child: TextButton(
@@ -44,6 +48,7 @@ class HomeScreen extends StatelessWidget {
                               fontSize: screenWidth / 5,
                               color: Color.fromARGB(255, 84, 175, 250),
                               shadows: [Shadow(color: Colors.black, offset: Offset(5, 5))])))),
+              //Options button
               Container(
                   margin: EdgeInsets.all(10),
                   child: TextButton(

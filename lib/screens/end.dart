@@ -6,6 +6,8 @@ import "package:google_fonts/google_fonts.dart";
 import "game.dart";
 import "home.dart";
 
+
+//Stream for showing the rankings
 final Stream<QuerySnapshot> _recordsStream=FirebaseFirestore.instance.collection("records").snapshots();
 
 class EndScreen extends StatelessWidget {
@@ -19,6 +21,7 @@ class EndScreen extends StatelessWidget {
             width: screenWidth,
             color: Colors.black,
             child: Column(children: [
+              //Return to menu button
               Container(
                 alignment: Alignment.topLeft,
               margin: EdgeInsets.only(top: screenHeight / 20),
@@ -37,12 +40,14 @@ class EndScreen extends StatelessWidget {
                 icon:Icon(Icons.arrow_back, color:Colors.white, size:screenWidth/7.5)
               ),
                 ),
+                //Rankings text
                 Container(
               margin: EdgeInsets.only(top: screenHeight / 25),
               child: Text("Rankings",
                   textAlign: TextAlign.center,
                   style: GoogleFonts.permanentMarker(fontSize: screenWidth / 7, color: Colors.white)),
                 ),
+                //Actual rankings, being displayed from the firestore collection
                 Container(
                   height:screenHeight/2,
                   child:StreamBuilder<QuerySnapshot>(
@@ -69,6 +74,7 @@ class EndScreen extends StatelessWidget {
 
                   )
                 ),
+              //Replay button
               Container(
                   margin: EdgeInsets.only(top: screenHeight / 30),
                   child: IconButton(

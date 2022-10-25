@@ -15,11 +15,14 @@ import "home.dart";
 import "end.dart";
 import "../controller/controller.dart";
 
+
+//Global game variables
 bool isSubstitution = false;
 int isKurama = 0;
 bool tappable = true;
 bool canDie = true;
 
+//Collection for creating the rankings in Firestore
 final CollectionReference records = FirebaseFirestore.instance.collection("records");
 
 class MainGame extends StatefulWidget {
@@ -34,13 +37,17 @@ class _MainGameState extends State<MainGame> {
     var screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       body: data.died ? EndScreen() : Stack(children: [
-              Container(height: screenHeight, child: GameWidget(game: GameScreen(setState:setState))),
+              //GameWidget
+              SizedBox(height: screenHeight, child: GameWidget(game: GameScreen(setState:setState))),
+              //Naruto Kurama power button
               Container(
                 margin: EdgeInsets.only(top: screenHeight / 1.25),
                 height: screenHeight / 3,
                 child: TextButton(
                     child: Image.asset("assets/images/power2.png"),
                     onPressed: () {
+                      //isKurama == 0 represents not using the power but you can use
+                      //1 represents using and 2 represents not using and you can't use
                       if (isKurama == 0) {
                         isKurama = 1;
                         canDie = false;
@@ -56,6 +63,7 @@ class _MainGameState extends State<MainGame> {
                       }
                     }),
               ),
+              //Substituion button
               Container(
                 margin: EdgeInsets.only(top: screenHeight / 1.25, left: screenWidth / 1.5),
                 height: screenHeight / 3,
@@ -82,6 +90,9 @@ class _MainGameState extends State<MainGame> {
 }
 
 class GameScreen extends FlameGame with TapDetector, HasCollisionDetection {
+
+  //Adding required variables
+
   var setState;
 
   GameScreen({required this.setState});
@@ -106,6 +117,7 @@ class GameScreen extends FlameGame with TapDetector, HasCollisionDetection {
   Future<void> onLoad() async {
     super.onLoad();
 
+    //Loading sprites
     background2 = await ParallaxComponent.load([ParallaxImageData("background2.png")],
         baseVelocity: Vector2(0, 10),
         velocityMultiplierDelta: Vector2.all(10),
@@ -160,9 +172,11 @@ class GameScreen extends FlameGame with TapDetector, HasCollisionDetection {
   void update(dt) {
     super.update(dt);
     if (!data.died) {
+      //Moving the obstacles
       obstacle1.y = obstacle1.y + 5;
       obstacle2.y = obstacle2.y + 7;
 
+      //Respawing the obstacles and increasing score
       if (obstacle1.y > size[1]) {
         data.score++;
         obstacle1.y = -size[1] / 2;
@@ -172,6 +186,7 @@ class GameScreen extends FlameGame with TapDetector, HasCollisionDetection {
         obstacle2.y = -size[1] / 3;
       }
 
+      //Defining which animation are going to be showed
       if (isSubstitution) {
         naruto.animation = narutoAnimation3;
       } else if (isKurama == 1) {
@@ -181,6 +196,7 @@ class GameScreen extends FlameGame with TapDetector, HasCollisionDetection {
       }
     }else{
       if(data.score>0){
+      //Setting the record document on firestore
       records
       .doc(DateTime.now().toString())
       .set({
@@ -194,16 +210,11 @@ class GameScreen extends FlameGame with TapDetector, HasCollisionDetection {
       });
     }
   }
-
-  @override
-  void render(canvas){
-    super.render(canvas);
-  }
 }
 
+//Collisions
+
 class Naruto extends SpriteAnimationComponent with CollisionCallbacks {
-
-
 
   @override
   Future<void> onLoad() async {

@@ -11,6 +11,7 @@ class OptionsScreen extends StatelessWidget {
     var screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
         body: Container(
+            //Container containing the background image
             padding: EdgeInsets.only(top: screenWidth / 10),
             height: screenHeight,
             width: screenWidth,
@@ -21,6 +22,7 @@ class OptionsScreen extends StatelessWidget {
                     opacity: 0.3,
                     image: AssetImage("assets/images/appbackground2.png"))),
             child: Column(children: [
+              //Return button
               Container(
                   alignment: Alignment.topLeft,
                   child: IconButton(
@@ -32,6 +34,7 @@ class OptionsScreen extends StatelessWidget {
                         ));
                       },
                       icon: Icon(Icons.arrow_back, color: Colors.orange, size: screenWidth / 7.5))),
+              //Disable and Enable music button, still not finished
               Container(
                   margin: EdgeInsets.only(top: screenWidth / 10),
                   child: TextButton(
@@ -41,6 +44,7 @@ class OptionsScreen extends StatelessWidget {
                               fontSize: screenWidth / 5,
                               color: Color.fromARGB(255, 255, 145, 0),
                               shadows: [Shadow(color: Colors.black, offset: Offset(5, 5))])))),
+              //Switch account button, still not finished     
               Container(
                   margin: EdgeInsets.only(top: screenWidth / 10),
                   child: TextButton(
@@ -56,6 +60,7 @@ class OptionsScreen extends StatelessWidget {
                               fontSize: screenWidth / 6,
                               color: Color.fromARGB(255, 255, 145, 0),
                               shadows: [Shadow(color: Colors.black, offset: Offset(5, 5))])))),
+              //Credits button, still not finished                      
               Container(
                   margin: EdgeInsets.only(top: screenWidth / 10),
                   child: TextButton(
