@@ -1,7 +1,5 @@
-import 'dart:convert';
 
 import "package:mobx/mobx.dart";
-import "package:http/http.dart" as http;
 
 part "controller.g.dart";
 
@@ -12,5 +10,5 @@ abstract class _Controller with Store {
   bool died = false;
 
   @observable
-  var score=0;
+  var score = 0;
 }

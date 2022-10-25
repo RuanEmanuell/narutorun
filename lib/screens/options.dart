@@ -2,7 +2,6 @@ import 'package:alarme/screens/home.dart';
 import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
 
-import "home.dart";
 
 class OptionsScreen extends StatelessWidget {
   @override
@@ -15,7 +14,7 @@ class OptionsScreen extends StatelessWidget {
             padding: EdgeInsets.only(top: screenWidth / 10),
             height: screenHeight,
             width: screenWidth,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 color: Color.fromARGB(255, 84, 175, 250),
                 image: DecorationImage(
                     fit: BoxFit.cover,
@@ -42,9 +41,9 @@ class OptionsScreen extends StatelessWidget {
                       child: Text("Music",
                           style: GoogleFonts.permanentMarker(
                               fontSize: screenWidth / 5,
-                              color: Color.fromARGB(255, 255, 145, 0),
-                              shadows: [Shadow(color: Colors.black, offset: Offset(5, 5))])))),
-              //Switch account button, still not finished     
+                              color: const Color.fromARGB(255, 255, 145, 0),
+                              shadows: [const Shadow(color: Colors.black, offset: Offset(5, 5))])))),
+              //Switch account button, still not finished
               Container(
                   margin: EdgeInsets.only(top: screenWidth / 10),
                   child: TextButton(
@@ -58,9 +57,9 @@ class OptionsScreen extends StatelessWidget {
                       child: Text("Account",
                           style: GoogleFonts.permanentMarker(
                               fontSize: screenWidth / 6,
-                              color: Color.fromARGB(255, 255, 145, 0),
-                              shadows: [Shadow(color: Colors.black, offset: Offset(5, 5))])))),
-              //Credits button, still not finished                      
+                              color: const Color.fromARGB(255, 255, 145, 0),
+                              shadows: [const Shadow(color: Colors.black, offset: Offset(5, 5))])))),
+              //Credits button, still not finished
               Container(
                   margin: EdgeInsets.only(top: screenWidth / 10),
                   child: TextButton(
@@ -74,8 +73,8 @@ class OptionsScreen extends StatelessWidget {
                       child: Text("Credits",
                           style: GoogleFonts.permanentMarker(
                               fontSize: screenWidth / 6,
-                              color: Color.fromARGB(255, 255, 145, 0),
-                              shadows: [Shadow(color: Colors.black, offset: Offset(5, 5))]))))
+                              color: const Color.fromARGB(255, 255, 145, 0),
+                              shadows: [const Shadow(color: Colors.black, offset: Offset(5, 5))]))))
             ])));
   }
 }

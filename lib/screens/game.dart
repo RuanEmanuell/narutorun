@@ -1,6 +1,5 @@
 import 'dart:math';
 import 'package:flame/collisions.dart';
-import 'package:flame_audio/flame_audio.dart';
 import 'package:flame/components.dart';
 import 'package:flame/parallax.dart';
 import 'package:flame/sprite.dart';
@@ -8,13 +7,10 @@ import 'package:flutter/material.dart';
 import "package:flame/game.dart";
 import "package:flame/input.dart";
 
-import 'package:firebase_core/firebase_core.dart';
 import "package:cloud_firestore/cloud_firestore.dart";
 
 import "home.dart";
 import "end.dart";
-import "../controller/controller.dart";
-
 
 //Global game variables
 bool isSubstitution = false;
@@ -36,61 +32,61 @@ class _MainGameState extends State<MainGame> {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: data.died ? EndScreen() : Stack(children: [
-              //GameWidget
-              SizedBox(height: screenHeight, child: GameWidget(game: GameScreen(setState:setState))),
-              //Naruto Kurama power button
-              Container(
-                margin: EdgeInsets.only(top: screenHeight / 1.25),
-                height: screenHeight / 3,
-                child: TextButton(
-                    child: Image.asset("assets/images/power2.png"),
-                    onPressed: () {
-                      //isKurama == 0 represents not using the power but you can use
-                      //1 represents using and 2 represents not using and you can't use
-                      if (isKurama == 0) {
-                        isKurama = 1;
-                        canDie = false;
-                        Future.delayed(Duration(seconds: 5), () {
-                          isKurama = 2;
-                        });
-                        Future.delayed(Duration(seconds: 7), () {
-                          canDie = true;
-                        });
-                        Future.delayed(Duration(seconds: 15), () {
-                          isKurama = 0;
-                        });
-                      }
-                    }),
-              ),
-              //Substituion button
-              Container(
-                margin: EdgeInsets.only(top: screenHeight / 1.25, left: screenWidth / 1.5),
-                height: screenHeight / 3,
-                child: TextButton(
-                    child: Image.asset("assets/images/power1.png"),
-                    onPressed: () {
-                      if (tappable && isKurama != 1) {
-                        isSubstitution = true;
-                        tappable = false;
-                        canDie = false;
-                        Future.delayed(Duration(milliseconds: 2000), () {
-                          isSubstitution = false;
-                        });
-                        Future.delayed(Duration(milliseconds: 2100), () {
-                          tappable = true;
-                          canDie = true;
-                        });
-                      }
-                    }),
-              ),
-            ])
-    );
+        body: data.died
+            ? EndScreen()
+            : Stack(children: [
+                //GameWidget
+                SizedBox(height: screenHeight, child: GameWidget(game: GameScreen(setState: setState))),
+                //Naruto Kurama power button
+                Container(
+                  margin: EdgeInsets.only(top: screenHeight / 1.25),
+                  height: screenHeight / 3,
+                  child: TextButton(
+                      child: Image.asset("assets/images/power2.png"),
+                      onPressed: () {
+                        //isKurama == 0 represents not using the power but you can use
+                        //1 represents using and 2 represents not using and you can't use
+                        if (isKurama == 0) {
+                          isKurama = 1;
+                          canDie = false;
+                          Future.delayed(const Duration(seconds: 5), () {
+                            isKurama = 2;
+                          });
+                          Future.delayed(const Duration(seconds: 7), () {
+                            canDie = true;
+                          });
+                          Future.delayed(const Duration(seconds: 15), () {
+                            isKurama = 0;
+                          });
+                        }
+                      }),
+                ),
+                //Substituion button
+                Container(
+                  margin: EdgeInsets.only(top: screenHeight / 1.25, left: screenWidth / 1.5),
+                  height: screenHeight / 3,
+                  child: TextButton(
+                      child: Image.asset("assets/images/power1.png"),
+                      onPressed: () {
+                        if (tappable && isKurama != 1) {
+                          isSubstitution = true;
+                          tappable = false;
+                          canDie = false;
+                          Future.delayed(const Duration(milliseconds: 2000), () {
+                            isSubstitution = false;
+                          });
+                          Future.delayed(const Duration(milliseconds: 2100), () {
+                            tappable = true;
+                            canDie = true;
+                          });
+                        }
+                      }),
+                ),
+              ]));
   }
 }
 
 class GameScreen extends FlameGame with TapDetector, HasCollisionDetection {
-
   //Adding required variables
 
   var setState;
@@ -194,19 +190,15 @@ class GameScreen extends FlameGame with TapDetector, HasCollisionDetection {
       } else {
         naruto.animation = narutoAnimation1;
       }
-    }else{
-      if(data.score>0){
-      //Setting the record document on firestore
-      records
-      .doc(DateTime.now().toString())
-      .set({
-        "record":data.score
-      });
-      data.score=0;
+    } else {
+      if (data.score > 0) {
+        //Setting the record document on firestore
+        records.doc(DateTime.now().toString()).set({"record": data.score});
+        data.score = 0;
       }
 
-      setState((){
-        data.died=true;
+      setState(() {
+        data.died = true;
       });
     }
   }
@@ -215,7 +207,6 @@ class GameScreen extends FlameGame with TapDetector, HasCollisionDetection {
 //Collisions
 
 class Naruto extends SpriteAnimationComponent with CollisionCallbacks {
-
   @override
   Future<void> onLoad() async {
     await super.onLoad();

@@ -4,11 +4,10 @@ import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
 
 import "game.dart";
-import "home.dart";
-
 
 //Stream for showing the rankings
-final Stream<QuerySnapshot> _recordsStream=FirebaseFirestore.instance.collection("records").snapshots();
+final Stream<QuerySnapshot> _recordsStream =
+    FirebaseFirestore.instance.collection("records").snapshots();
 
 class EndScreen extends StatelessWidget {
   @override
@@ -24,56 +23,42 @@ class EndScreen extends StatelessWidget {
               //Return to menu button
               Container(
                 alignment: Alignment.topLeft,
-              margin: EdgeInsets.only(top: screenHeight / 20),
-              child: IconButton(
-                onPressed:(){
-                  data.died = false;
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder:(context) {
-                        return HomeScreen();
-                      },
-                    )
-                  );
-                },
-                icon:Icon(Icons.arrow_back, color:Colors.white, size:screenWidth/7.5)
+                margin: EdgeInsets.only(top: screenHeight / 20),
+                child: IconButton(
+                    onPressed: () {
+                      data.died = false;
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) {
+                          return HomeScreen();
+                        },
+                      ));
+                    },
+                    icon: Icon(Icons.arrow_back, color: Colors.white, size: screenWidth / 7.5)),
               ),
-                ),
-                //Rankings text
-                Container(
-              margin: EdgeInsets.only(top: screenHeight / 25),
-              child: Text("Rankings",
-                  textAlign: TextAlign.center,
-                  style: GoogleFonts.permanentMarker(fontSize: screenWidth / 7, color: Colors.white)),
-                ),
-                //Actual rankings, being displayed from the firestore collection
-                Container(
-                  height:screenHeight/2,
-                  child:StreamBuilder<QuerySnapshot>(
-                    stream:_recordsStream,
-                    builder:(context, snapshot){
-                      return ListView(
-                        children:snapshot.data!.docs.map((DocumentSnapshot document){
-                          Map<String, dynamic> data=document.data()! as Map<String, dynamic>;
+              //Rankings text
+              Container(
+                margin: EdgeInsets.only(top: screenHeight / 25),
+                child: Text("Rankings",
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.permanentMarker(fontSize: screenWidth / 7, color: Colors.white)),
+              ),
+              //Actual rankings, being displayed from the firestore collection
+              SizedBox(
+                  height: screenHeight / 2,
+                  child: StreamBuilder<QuerySnapshot>(
+                      stream: _recordsStream,
+                      builder: (context, snapshot) {
+                        return ListView(
+                            children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                          Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
                           return Container(
-                            child:Column(
-                              children:[
-                                Text(data["record"].toString(), style:GoogleFonts.permanentMarker(
-                                  fontSize:screenWidth/20,
-                                  color:Colors.white
-                                ))
-                              ]
-                            )
-                          );
-                        
-                        }
-                      ).toList()
-                      );
-                    }
-
-                  )
-                ),
+                              child: Column(children: [
+                            Text(data["record"].toString(),
+                                style: GoogleFonts.permanentMarker(
+                                    fontSize: screenWidth / 20, color: Colors.white))
+                          ]));
+                        }).toList());
+                      })),
               //Replay button
               Container(
                   margin: EdgeInsets.only(top: screenHeight / 30),

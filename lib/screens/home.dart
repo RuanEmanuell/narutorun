@@ -19,7 +19,7 @@ class HomeScreen extends StatelessWidget {
             //This is the main container that contains the image
             height: screenHeight,
             width: screenWidth,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 color: Colors.orange,
                 image: DecorationImage(
                     opacity: 0.25,
@@ -34,7 +34,7 @@ class HomeScreen extends StatelessWidget {
                   child: Image.asset("assets/images/logo.png")),
               //Play button
               Container(
-                  margin: EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(10),
                   child: TextButton(
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(
@@ -46,11 +46,11 @@ class HomeScreen extends StatelessWidget {
                       child: Text("Play",
                           style: GoogleFonts.permanentMarker(
                               fontSize: screenWidth / 5,
-                              color: Color.fromARGB(255, 84, 175, 250),
-                              shadows: [Shadow(color: Colors.black, offset: Offset(5, 5))])))),
+                              color: const Color.fromARGB(255, 84, 175, 250),
+                              shadows: [const Shadow(color: Colors.black, offset: Offset(5, 5))])))),
               //Options button
               Container(
-                  margin: EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(10),
                   child: TextButton(
                       onPressed: () {
                         Navigator.push(context, MaterialPageRoute(
@@ -62,8 +62,8 @@ class HomeScreen extends StatelessWidget {
                       child: Text("Options",
                           style: GoogleFonts.permanentMarker(
                               fontSize: screenWidth / 6,
-                              color: Color.fromARGB(255, 84, 175, 250),
-                              shadows: [Shadow(color: Colors.black, offset: Offset(5, 5))]))))
+                              color: const Color.fromARGB(255, 84, 175, 250),
+                              shadows: [const Shadow(color: Colors.black, offset: Offset(5, 5))]))))
             ])));
   }
 }
