@@ -9,32 +9,41 @@ part of 'controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$Controller on _Controller, Store {
-  late final _$jsonAtom = Atom(name: '_Controller.json', context: context);
+  late final _$diedAtom = Atom(name: '_Controller.died', context: context);
 
   @override
-  dynamic get json {
-    _$jsonAtom.reportRead();
-    return super.json;
+  bool get died {
+    _$diedAtom.reportRead();
+    return super.died;
   }
 
   @override
-  set json(dynamic value) {
-    _$jsonAtom.reportWrite(value, super.json, () {
-      super.json = value;
+  set died(bool value) {
+    _$diedAtom.reportWrite(value, super.died, () {
+      super.died = value;
     });
   }
 
-  late final _$requestDataAsyncAction = AsyncAction('_Controller.requestData', context: context);
+  late final _$scoreAtom = Atom(name: '_Controller.score', context: context);
 
   @override
-  Future requestData() {
-    return _$requestDataAsyncAction.run(() => super.requestData());
+  int get score {
+    _$scoreAtom.reportRead();
+    return super.score;
+  }
+
+  @override
+  set score(int value) {
+    _$scoreAtom.reportWrite(value, super.score, () {
+      super.score = value;
+    });
   }
 
   @override
   String toString() {
     return '''
-json: ${json}
+died: ${died},
+score: ${score}
     ''';
   }
 }

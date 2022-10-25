@@ -12,15 +12,5 @@ abstract class _Controller with Store {
   bool died = false;
 
   @observable
-  var json;
-
-  @action
-  requestData() async {
-    var url = Uri.parse("https://swapi.dev/api/people/1");
-    var response = await http.get(url);
-
-    if (response.statusCode == 200) {
-      json = jsonDecode(response.body);
-    }
-  }
+  var score=0;
 }

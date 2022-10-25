@@ -8,6 +8,9 @@ import 'package:flutter/material.dart';
 import "package:flame/game.dart";
 import "package:flame/input.dart";
 
+import 'package:firebase_core/firebase_core.dart';
+import "package:cloud_firestore/cloud_firestore.dart";
+
 import "home.dart";
 import "end.dart";
 import "../controller/controller.dart";
@@ -17,16 +20,21 @@ int isKurama = 0;
 bool tappable = true;
 bool canDie = true;
 
-class MainGame extends StatelessWidget {
+final CollectionReference records = FirebaseFirestore.instance.collection("records");
+
+class MainGame extends StatefulWidget {
+  @override
+  State<MainGame> createState() => _MainGameState();
+}
+
+class _MainGameState extends State<MainGame> {
   @override
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
-      body: data.died
-          ? EndScreen()
-          : Stack(children: [
-              Container(height: screenHeight, child: GameWidget(game: GameScreen(context: context))),
+      body: data.died ? EndScreen() : Stack(children: [
+              Container(height: screenHeight, child: GameWidget(game: GameScreen(setState:setState))),
               Container(
                 margin: EdgeInsets.only(top: screenHeight / 1.25),
                 height: screenHeight / 3,
@@ -58,25 +66,25 @@ class MainGame extends StatelessWidget {
                         isSubstitution = true;
                         tappable = false;
                         canDie = false;
-                        Future.delayed(Duration(milliseconds: 1500), () {
+                        Future.delayed(Duration(milliseconds: 2000), () {
                           isSubstitution = false;
                         });
-                        Future.delayed(Duration(milliseconds: 1900), () {
-                          canDie = true;
+                        Future.delayed(Duration(milliseconds: 2100), () {
                           tappable = true;
+                          canDie = true;
                         });
                       }
                     }),
               ),
-            ]),
+            ])
     );
   }
 }
 
 class GameScreen extends FlameGame with TapDetector, HasCollisionDetection {
-  var context;
+  var setState;
 
-  GameScreen({required this.context});
+  GameScreen({required this.setState});
 
   var background1;
   var background2;
@@ -156,9 +164,11 @@ class GameScreen extends FlameGame with TapDetector, HasCollisionDetection {
       obstacle2.y = obstacle2.y + 7;
 
       if (obstacle1.y > size[1]) {
+        data.score++;
         obstacle1.y = -size[1] / 2;
       }
       if (obstacle2.y > size[1]) {
+        data.score++;
         obstacle2.y = -size[1] / 3;
       }
 
@@ -169,15 +179,32 @@ class GameScreen extends FlameGame with TapDetector, HasCollisionDetection {
       } else {
         naruto.animation = narutoAnimation1;
       }
-    } else {
-      Navigator.push(context, MaterialPageRoute(builder: (context) {
-        return EndScreen();
-      }));
+    }else{
+      if(data.score>0){
+      records
+      .doc(DateTime.now().toString())
+      .set({
+        "record":data.score
+      });
+      data.score=0;
+      }
+
+      setState((){
+        data.died=true;
+      });
     }
+  }
+
+  @override
+  void render(canvas){
+    super.render(canvas);
   }
 }
 
 class Naruto extends SpriteAnimationComponent with CollisionCallbacks {
+
+
+
   @override
   Future<void> onLoad() async {
     await super.onLoad();

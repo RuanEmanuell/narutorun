@@ -1,9 +1,12 @@
 import 'package:alarme/screens/home.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:flutter/material.dart";
 import "package:google_fonts/google_fonts.dart";
 
 import "game.dart";
 import "home.dart";
+
+final Stream<QuerySnapshot> _recordsStream=FirebaseFirestore.instance.collection("records").snapshots();
 
 class EndScreen extends StatelessWidget {
   @override
@@ -17,10 +20,55 @@ class EndScreen extends StatelessWidget {
             color: Colors.black,
             child: Column(children: [
               Container(
-                margin: EdgeInsets.only(top: screenHeight / 12),
-                child: Text("Rankings",
-                    style: GoogleFonts.permanentMarker(fontSize: screenWidth / 7, color: Colors.white)),
+                alignment: Alignment.topLeft,
+              margin: EdgeInsets.only(top: screenHeight / 20),
+              child: IconButton(
+                onPressed:(){
+                  data.died = false;
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder:(context) {
+                        return HomeScreen();
+                      },
+                    )
+                  );
+                },
+                icon:Icon(Icons.arrow_back, color:Colors.white, size:screenWidth/7.5)
               ),
+                ),
+                Container(
+              margin: EdgeInsets.only(top: screenHeight / 25),
+              child: Text("Rankings",
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.permanentMarker(fontSize: screenWidth / 7, color: Colors.white)),
+                ),
+                Container(
+                  height:screenHeight/2,
+                  child:StreamBuilder<QuerySnapshot>(
+                    stream:_recordsStream,
+                    builder:(context, snapshot){
+                      return ListView(
+                        children:snapshot.data!.docs.map((DocumentSnapshot document){
+                          Map<String, dynamic> data=document.data()! as Map<String, dynamic>;
+                          return Container(
+                            child:Column(
+                              children:[
+                                Text(data["record"].toString(), style:GoogleFonts.permanentMarker(
+                                  fontSize:screenWidth/20,
+                                  color:Colors.white
+                                ))
+                              ]
+                            )
+                          );
+                        
+                        }
+                      ).toList()
+                      );
+                    }
+
+                  )
+                ),
               Container(
                   margin: EdgeInsets.only(top: screenHeight / 30),
                   child: IconButton(
@@ -32,7 +80,7 @@ class EndScreen extends StatelessWidget {
                           },
                         ));
                       },
-                      icon: Icon(Icons.replay, color: Colors.white, size: screenWidth / 5)))
+                      icon: Icon(Icons.replay, color: Colors.white, size: screenWidth / 7.5)))
             ])));
   }
 }
